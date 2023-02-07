@@ -1,7 +1,6 @@
 # An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots
 
 ### Package Overview
-<br/>
 
 **Demo (1 file)**
 
@@ -62,7 +61,6 @@ private:
 <br/>
 
 ### Functions
-<br/>
 
 #### Solver
 
