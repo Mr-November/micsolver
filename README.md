@@ -50,11 +50,11 @@ private:
 - q2arc.m  
 - arc2xi.m  
 - xi2arc.m  
-- rot2q.m  
 - q2rot.m  
+- rot2q.m  
 <br/>
 
-**Others (4 files)**  
+**Other Tools (4 files)**  
 - circles3.m  
 - get_end.m  
 - collision_indicator.m  
@@ -64,296 +64,40 @@ private:
 ### Functions
 <br/>
 
-**arc2q.m**
+#### Solver
 
-`ARC2Q` Converts arc parameters to a quaternion.
+**micsolver.m**
 
-`Q = ARC2Q(KAPPA, PHI, L)` computes the quaternion `Q` representing the end rotation of a 1-section constant-curvature robot with curvature `KAPPA`, bending angle `PHI`, and section length `L`.
+`MICSOLVER` Multi-solution solver for the inverse kinematics of 3-section constant-curvature robots.
 
-*Example*
-```matlab
-kappa = 2*pi/3;
-phi = pi/3;
-q = arc2q(kappa, phi, 1);
-```
-
-<br/>
-
-**arc2xi.m**
-
-`ARC2XI` Converts the arc parameters of 3 sections to the exponential coordinate.
-
-`XI = ARC2XI(L1, L2, L3, ARC)` computes the exponential coordinate `XI` of a 3-section constant-curvature robot. The section lengths are `L1, L2` and `L3`, respectively. The parameter `ARC` is an array containing curvatures and bending angles of each section.
-
-*Example*
-```matlab
-k1 = 4*sqrt(5)/5; p1 = atan(2);
-k2 = sqrt(37)/5; p2 = -pi+atan(6);
-k3 = sqrt(10)/5; p3 = -atan(3);
-xi = arc2xi(1, 1, 1, [k1, p1, k2, p2, k3, p3]);
-```
-
-<br/>
-
-**xi2arc.m**
-
-`XI2ARC` Converts the exponential coordinate to the arc parameters of 3 sections.
-
-`ARC = XI2ARC(L1, L2, L3, XI)` computes the arc parameter `ARC` of a 3-section constant-curvature robot. The section lengths are `L1, L2` and `L3`, respectively. The parameter `XI` is the overall exponential coordinate.
-
-*Example*
-```matlab
-xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
-arc = xi2arc(1, 1, 1, xi);
-```
-
-<br/>
-
-**circles3.m**
-
-`CIRCLES3` Visualises the 3-section constant-curvature robot with given model parameters.
-
-`CIRCLES3(FH, L1, L2, L3, XI, TYPE)` displays the plot in target figure `FH`. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. Line colours and styles are specified in the character string `TYPE`.
-
-*Example*
-```matlab
-L1 = 1; L2 = 1; L3 = 1;
-xi_1 = [-1.60; 0.08; 1.20; -0.20; 0.60; 0.20];
-circles3(1, L1, L2, L3, xi_1, 'k--');
-xi_2 = [-0.39; 0.48; -1.13; 0.47; 1.79; -0.17];
-circles3(1, L1, L2, L3, xi_2, 'k-');
-view(75, 9);
-```
-
-<br/>
-
-**collision_indicator.m**
-
-`COLLISION_INDICATOR` Computes the minimal distance between the sample points and the spherical obstacles.
-
-`COLLIDE = COLLISION_INDICATOR(L1, L2, L3, XI, RO, ROR, SMP)` returns the minimal distance `COLLIDE`. If `COLLIDE > 0`, then no collision occurs. If `COLLIDE < 0`, then the robot collides with obstacles. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. The obstacles are spheres centring at `RO` with radius `ROR`. The sample points are distributed uniformly along the robot curve with the number `SMP`.
-
-*Example*
-```matlab
-L1 = 1; L2 = 1; L3 = 1;
-xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
-ro = [0.8; 0.7; 0.6];
-ror = 0.4;
-collide = collision_indicator(L1, L2, L3, xi, ro, ror, 10);
-```
-
-<br/>
-
-**collision_marker.m**
-
-`COLLISION_MARKER` Visualises the collision part in yellow.
-
-`COLLISION_MARKER(L1, L2, L3, XI, RO, ROR)` draws the part of the robot that is collided with obstacles. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. The obstacles are spheres centring at `RO` with radius `ROR`.
-
-*Example*
-```matlab
-L1 = 1; L2 = 1; L3 = 1;
-xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
-ro = [0.8; 0.7; 0.6];
-ror = 0.4;
-circles3(1, L1, L2, L3, xi, 'k-');
-collision_marker(L1, L2, L3, xi, ro, ror);
-view(75, 9);
-```
-
-<br/>
-
-**exphat.m**
-
-`EXPHAT` Composition of the hat map and the matrix exponential.
-
-`M = EXPHAT(V)` is a matrix in $\mathsf{SO}_3$ or $\mathsf{SE}_3$ and is computed using Rodrigues' formula. The vector `V` is in $\mathbb{R}^3$ or $\mathbb{R}^4$. The hat map sends `V` to an element of $\mathsf{so}_3$ or $\mathsf{se}_3$.
-
-<br/>
-
-**get_end.m**
-
-`GET_END` Computes the end pose of a 3-section constant-curvature robot.
-
-`T = GET_END(L1, L2, L3, XI)` returns the 4-by-4 matrix of end pose.
-
-*Example*
-```matlab
-xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
-T = get_end(1, 1, 1, xi);
-```
-
-<br/>
-
-**get_err.m**
-
-`GET_ERR` Computes the error between desired and current end pose.
-
-This is a private function of our solver.
-
-<br/>
-
-**jacobian3cc.m**
-
-`JACOBIAN3CC` Computes the Jacobian matrix when the forward kinematics is expressed by the product of exponentials formula.
-
-`J = JACOBIAN3CC(L1, L2, L3, XI)` returns the 6-by-6 Jacobian matrix.
-
-<br/>
-
-**q2arc.m**
-
-`Q2ARC` Converts a quaternion to arc parameters.
-
-`ARC = Q2ARC(Q, L)` computes the arc parameters of a 1-section constant-curvature robot, including the curvature `KAPPA` and bending angle `PHI`. The section length is `L`. The quaternion `Q` represents the end rotation.
-
-*Example*
-```matlab
-q = [1/2; -3/4; sqrt(3)/4; 0];
-arc = q2arc(q, 1);
-```
-
-<br/>
-
-**q2rot.m**
-
-`Q2ROT` Converts a quaternion to a rotation matrix.
-
-`R = Q2ROT(Q)` returns the rotation matrix that is equivalent to the quaternion.
-
-<br/>
-
-**rho.m**
-
-`RHO` Computes the linear distance between two ends of a circular arc.
-
-This is a private function of our solver.
-
-<br/>
-
-**rot2q.m**
-
-`ROT2Q` Converts a rotation matrix to a quaternion.
-
-`Q = ROT2Q(R)` returns the quaternion that is equivalent to the rotation matrix.
-
-<br/>
-
-**soln2xi.m**
-
-`SOLN2XI` Converts the output of our solver to an exponential coordinate.
-
-This is a private function of our solver.
-
-<br/>
-
-**solve_r1.m**
-
-`SOLVE_R1` Computes the model parameter of the 1st section.
-
-This is a private function of our solver.
-
-<br/>
-
-**solve_r2.m**
-
-`SOLVE_R2` Computes the model parameter of the 2nd section using rotational and translational constraints.
-
-This is a private function of our solver.
-
-<br/>
-
-**veelog.m**
-
-`VEELOG` Composition of the matrix logarithm and the vee map.
-
-`V = VEELOG(M)` is a vector in $\mathbb{R}^3$ or $\mathbb{R}^4$ and is computed using Rodrigues' formula. The matrix `M` is in $\mathsf{SO}_3$ or $\mathsf{SE}_3$. The vee map sends an element of $\mathsf{so}_3$ or $\mathsf{se}_3$ to a vector.
-
-<br/>
-
-**up_hat.m**
-
-`UP_HAT` Computes the Lie algebra of a vector.
-
-`M = UP_HAT(V)` is an element of $\mathsf{so}_3$ or $\mathsf{se}_3$, where `V` is an element of $\mathbb{R}^3$ or $\mathbb{R}^6$, respectively.
-
-<br/>
-
-**up_vee.m**
-
-`UP_VEE` Computes the Lie algebra of a vector.
-
-`V = UP_VEE(M)` is an element of $\mathbb{R}^3$ or $\mathbb{R}^6$, where `M` is an element of $\mathsf{so}_3$ or $\mathsf{se}_3$, respectively.
-
-<br/>
-
-**up_star.m**
-
-`UP_STAR` Computes the quaternion conjugation.
-
-`Q_UP_STAR = UP_STAR(Q)` returns the conjugation of `Q`.
-
-<br/>
-
-**up_plus.m**
-
-`UP_PLUS` Computes the matrix for left multiplications of quaternions.
-
-`Q_UP_PLUS = UP_PLUS(Q)` returns the left multiplication matrix of `Q`.
-
-<br/>
-
-**up_oplus.m**
-
-`UP_OPLUS` Computes the matrix for right multiplications of quaternions.
-
-`Q_UP_OPLUS = UP_OPLUS(Q)` returns the right multiplication matrix of `Q`.
-
-<br/>
-
-**revise_*.m**
-
-`REVISE_*` Correct the initial value with a numerical method.
-
-`[XI_STAR, ERR, K] = REVISE_*(L1, L2, L3, Q, R, XI, MSTEP, TOL, TYPE)` returns the result of numerical correction.
-   
-*Methods*  
-`grad` gradient method  
-`dls` damped least square method  
-`newton` Newton-Raphson method
+`[NOS, NOI] = MICSOLVER(L1, L2, L3, Q, R, TOL, IS_A_SOL)` returns the result of solving the 3-section inverse kinematics problem. The function uses preset resolutions or numerical methods to address the inverse kinematics problem. The function exits after one solution is found.
 
 *Input parameters*  
 `L1, L2, L3` section length  
 `Q, R` desired end rotation and translation  
-`XI` initial value  
-`MSTEP` allowed maximum steps of iterations  
 `TOL` error tolerance  
-`TYPE` set `'plot'` to visualise the numerical correction
+`IS_A_SOL` function handle  
+It is used to judge if the given parameter is a solution to the inverse kinematics problem. The function has two inputs `(ERR, XI)` and one output in boolean type.
 
 *Output parameters*  
-`XI_STAR` final value  
-`ERR` final error  
-`K` steps of iterations
+`NOS` number of solutions  
+`NOI` number of iterations in numerical correction
 
-*Example*  
+*Example*
 ```matlab
 L1 = 1; L2 = 1; L3 = 1;
-alpha = 15*pi/16; omega = [0.48; sqrt(3)/10; -0.86];
-q = [cos(alpha/2); sin(alpha/2)*omega];
-r = [-0.4; 1.1; 0.8];
-xi_0 = arc2xi(L1, L2, L3, pi.*[1, 2, 1, 2, 1, 2].*rand(1, 6));
-[xi, err, noi] = revise_grad(L1, L2, L3, q, r, xi_0, 2000, 1e-2, 'plot');
-[xi, err, noi] = revise_dls(L1, L2, L3, q, r, xi_0, 2000, 1e-2, 'plot');
-[xi, err, noi] = revise_newton(L1, L2, L3, q, r, xi_0, 200, 1e-2, 'plot');
+xi = arc2xi(L1, L2, L3, pi.*[1,2,1,2,1,2].*rand(1, 6));
+T = get_end(L1, L2, L3, xi);
+q = rot2q(T(1:3, 1:3));
+r = T(1:3, 4);
+tol = 1e-2; fun = @(e, x) e < tol;
+tic;
+[nos, ~] = micsolver(L1, L2, L3, q, r, tol, fun);
+rt = toc*1000;
+if nos
+    fprintf('A solution is found in %.2f ms.\n', rt);
+end
 ```
-
-<br/>
-
-**revise_plot.m**
-
-`REVISE_PLOT` Visualises the numerical correction.
-
-This is a private function of numerical methods.
 
 <br/>
 
@@ -402,35 +146,306 @@ end
 
 <br/>
 
-**micsolver.m**
+**rho.m**
 
-`MICSOLVER` Multi-solution solver for the inverse kinematics of 3-section constant-curvature robots.
+`RHO` Computes the linear distance between two ends of a circular arc.
 
-`[NOS, NOI] = MICSOLVER(L1, L2, L3, Q, R, TOL, IS_A_SOL)` returns the result of solving the 3-section inverse kinematics problem. The function uses preset resolutions or numerical methods to address the inverse kinematics problem. The function exits after one solution is found.
+This is a private function of our solver.
+
+<br/>
+
+**soln2xi.m**
+
+`SOLN2XI` Converts the output of our solver to an exponential coordinate.
+
+This is a private function of our solver.
+
+<br/>
+
+**get_err.m**
+
+`GET_ERR` Computes the error between desired and current end pose.
+
+This is a private function of our solver.
+
+<br/>
+
+**solve_r1.m**
+
+`SOLVE_R1` Computes the model parameter of the 1st section.
+
+This is a private function of our solver.
+
+<br/>
+
+**solve_r2.m**
+
+`SOLVE_R2` Computes the model parameter of the 2nd section using rotational and translational constraints.
+
+This is a private function of our solver.
+
+<br/>
+
+#### Numerical Methods
+
+**revise_*.m**
+
+`REVISE_*` Correct the initial value with a numerical method.
+
+`[XI_STAR, ERR, K] = REVISE_*(L1, L2, L3, Q, R, XI, MSTEP, TOL, TYPE)` returns the result of numerical correction.
+   
+*Methods*  
+`grad` gradient method  
+`dls` damped least square method  
+`newton` Newton-Raphson method
 
 *Input parameters*  
 `L1, L2, L3` section length  
 `Q, R` desired end rotation and translation  
+`XI` initial value  
+`MSTEP` allowed maximum steps of iterations  
 `TOL` error tolerance  
-`IS_A_SOL` function handle  
-It is used to judge if the given parameter is a solution to the inverse kinematics problem. The function has two inputs `(ERR, XI)` and one output in boolean type.
+`TYPE` set `'plot'` to visualise the numerical correction
 
 *Output parameters*  
-`NOS` number of solutions  
-`NOI` number of iterations in numerical correction
+`XI_STAR` final value  
+`ERR` final error  
+`K` steps of iterations
+
+*Example*  
+```matlab
+L1 = 1; L2 = 1; L3 = 1;
+alpha = 15*pi/16; omega = [0.48; sqrt(3)/10; -0.86];
+q = [cos(alpha/2); sin(alpha/2)*omega];
+r = [-0.4; 1.1; 0.8];
+xi_0 = arc2xi(L1, L2, L3, pi.*[1, 2, 1, 2, 1, 2].*rand(1, 6));
+[xi, err, noi] = revise_grad(L1, L2, L3, q, r, xi_0, 2000, 1e-2, 'plot');
+[xi, err, noi] = revise_dls(L1, L2, L3, q, r, xi_0, 2000, 1e-2, 'plot');
+[xi, err, noi] = revise_newton(L1, L2, L3, q, r, xi_0, 200, 1e-2, 'plot');
+```
+
+<br/>
+
+**revise_plot.m**
+
+`REVISE_PLOT` Visualises the numerical correction.
+
+This is a private function of numerical methods.
+
+<br/>
+
+**jacobian3cc.m**
+
+`JACOBIAN3CC` Computes the Jacobian matrix when the forward kinematics is expressed by the product of exponentials formula.
+
+`J = JACOBIAN3CC(L1, L2, L3, XI)` returns the 6-by-6 Jacobian matrix.
+
+<br/>
+
+#### Quaternion Operations
+
+**up_plus.m**
+
+`UP_PLUS` Computes the matrix for left multiplications of quaternions.
+
+`Q_UP_PLUS = UP_PLUS(Q)` returns the left multiplication matrix of `Q`.
+
+<br/>
+
+**up_oplus.m**
+
+`UP_OPLUS` Computes the matrix for right multiplications of quaternions.
+
+`Q_UP_OPLUS = UP_OPLUS(Q)` returns the right multiplication matrix of `Q`.
+
+<br/>
+
+**up_star.m**
+
+`UP_STAR` Computes the quaternion conjugation.
+
+`Q_UP_STAR = UP_STAR(Q)` returns the conjugation of `Q`.
+
+<br/>
+
+#### Lie Algebra Operations
+
+**up_hat.m**
+
+`UP_HAT` Computes the Lie algebra of a vector.
+
+`M = UP_HAT(V)` is an element of $\mathsf{so}_3$ or $\mathsf{se}_3$, where `V` is an element of $\mathbb{R}^3$ or $\mathbb{R}^6$, respectively.
+
+<br/>
+
+**up_vee.m**
+
+`UP_VEE` Computes the Lie algebra of a vector.
+
+`V = UP_VEE(M)` is an element of $\mathbb{R}^3$ or $\mathbb{R}^6$, where `M` is an element of $\mathsf{so}_3$ or $\mathsf{se}_3$, respectively.
+
+<br/>
+
+**exphat.m**
+
+`EXPHAT` Composition of the hat map and the matrix exponential.
+
+`M = EXPHAT(V)` is a matrix in $\mathsf{SO}_3$ or $\mathsf{SE}_3$ and is computed using Rodrigues' formula. The vector `V` is in $\mathbb{R}^3$ or $\mathbb{R}^4$. The hat map sends `V` to an element of $\mathsf{so}_3$ or $\mathsf{se}_3$.
+
+<br/>
+
+**veelog.m**
+
+`VEELOG` Composition of the matrix logarithm and the vee map.
+
+`V = VEELOG(M)` is a vector in $\mathbb{R}^3$ or $\mathbb{R}^4$ and is computed using Rodrigues' formula. The matrix `M` is in $\mathsf{SO}_3$ or $\mathsf{SE}_3$. The vee map sends an element of $\mathsf{so}_3$ or $\mathsf{se}_3$ to a vector.
+
+<br/>
+
+#### Conversions
+
+**arc2q.m**
+
+`ARC2Q` Converts arc parameters to a quaternion.
+
+`Q = ARC2Q(KAPPA, PHI, L)` computes the quaternion `Q` representing the end rotation of a 1-section constant-curvature robot with curvature `KAPPA`, bending angle `PHI`, and section length `L`.
+
+*Example*
+```matlab
+kappa = 2*pi/3;
+phi = pi/3;
+q = arc2q(kappa, phi, 1);
+```
+
+<br/>
+
+**q2arc.m**
+
+`Q2ARC` Converts a quaternion to arc parameters.
+
+`ARC = Q2ARC(Q, L)` computes the arc parameters of a 1-section constant-curvature robot, including the curvature `KAPPA` and bending angle `PHI`. The section length is `L`. The quaternion `Q` represents the end rotation.
+
+*Example*
+```matlab
+q = [1/2; -3/4; sqrt(3)/4; 0];
+arc = q2arc(q, 1);
+```
+
+<br/>
+
+**arc2xi.m**
+
+`ARC2XI` Converts the arc parameters of 3 sections to the exponential coordinate.
+
+`XI = ARC2XI(L1, L2, L3, ARC)` computes the exponential coordinate `XI` of a 3-section constant-curvature robot. The section lengths are `L1, L2` and `L3`, respectively. The parameter `ARC` is an array containing curvatures and bending angles of each section.
+
+*Example*
+```matlab
+k1 = 4*sqrt(5)/5; p1 = atan(2);
+k2 = sqrt(37)/5; p2 = -pi+atan(6);
+k3 = sqrt(10)/5; p3 = -atan(3);
+xi = arc2xi(1, 1, 1, [k1, p1, k2, p2, k3, p3]);
+```
+
+<br/>
+
+**xi2arc.m**
+
+`XI2ARC` Converts the exponential coordinate to the arc parameters of 3 sections.
+
+`ARC = XI2ARC(L1, L2, L3, XI)` computes the arc parameter `ARC` of a 3-section constant-curvature robot. The section lengths are `L1, L2` and `L3`, respectively. The parameter `XI` is the overall exponential coordinate.
+
+*Example*
+```matlab
+xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
+arc = xi2arc(1, 1, 1, xi);
+```
+
+<br/>
+
+**q2rot.m**
+
+`Q2ROT` Converts a quaternion to a rotation matrix.
+
+`R = Q2ROT(Q)` returns the rotation matrix that is equivalent to the quaternion.
+
+<br/>
+
+**rot2q.m**
+
+`ROT2Q` Converts a rotation matrix to a quaternion.
+
+`Q = ROT2Q(R)` returns the quaternion that is equivalent to the rotation matrix.
+
+<br/>
+
+#### Other Tools
+
+**circles3.m**
+
+`CIRCLES3` Visualises the 3-section constant-curvature robot with given model parameters.
+
+`CIRCLES3(FH, L1, L2, L3, XI, TYPE)` displays the plot in target figure `FH`. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. Line colours and styles are specified in the character string `TYPE`.
 
 *Example*
 ```matlab
 L1 = 1; L2 = 1; L3 = 1;
-xi = arc2xi(L1, L2, L3, pi.*[1,2,1,2,1,2].*rand(1, 6));
-T = get_end(L1, L2, L3, xi);
-q = rot2q(T(1:3, 1:3));
-r = T(1:3, 4);
-tol = 1e-2; fun = @(e, x) e < tol;
-tic;
-[nos, ~] = micsolver(L1, L2, L3, q, r, tol, fun);
-rt = toc*1000;
-if nos
-    fprintf('A solution is found in %.2f ms.\n', rt);
-end
+xi_1 = [-1.60; 0.08; 1.20; -0.20; 0.60; 0.20];
+circles3(1, L1, L2, L3, xi_1, 'k--');
+xi_2 = [-0.39; 0.48; -1.13; 0.47; 1.79; -0.17];
+circles3(1, L1, L2, L3, xi_2, 'k-');
+view(75, 9);
 ```
+
+<br/>
+
+**get_end.m**
+
+`GET_END` Computes the end pose of a 3-section constant-curvature robot.
+
+`T = GET_END(L1, L2, L3, XI)` returns the 4-by-4 matrix of end pose.
+
+*Example*
+```matlab
+xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
+T = get_end(1, 1, 1, xi);
+```
+
+<br/>
+
+**collision_indicator.m**
+
+`COLLISION_INDICATOR` Computes the minimal distance between the sample points and the spherical obstacles.
+
+`COLLIDE = COLLISION_INDICATOR(L1, L2, L3, XI, RO, ROR, SMP)` returns the minimal distance `COLLIDE`. If `COLLIDE > 0`, then no collision occurs. If `COLLIDE < 0`, then the robot collides with obstacles. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. The obstacles are spheres centring at `RO` with radius `ROR`. The sample points are distributed uniformly along the robot curve with the number `SMP`.
+
+*Example*
+```matlab
+L1 = 1; L2 = 1; L3 = 1;
+xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
+ro = [0.8; 0.7; 0.6];
+ror = 0.4;
+collide = collision_indicator(L1, L2, L3, xi, ro, ror, 10);
+```
+
+<br/>
+
+**collision_marker.m**
+
+`COLLISION_MARKER` Visualises the collision part in yellow.
+
+`COLLISION_MARKER(L1, L2, L3, XI, RO, ROR)` draws the part of the robot that is collided with obstacles. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. The obstacles are spheres centring at `RO` with radius `ROR`.
+
+*Example*
+```matlab
+L1 = 1; L2 = 1; L3 = 1;
+xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
+ro = [0.8; 0.7; 0.6];
+ror = 0.4;
+circles3(1, L1, L2, L3, xi, 'k-');
+collision_marker(L1, L2, L3, xi, ro, ror);
+view(75, 9);
+```
+
+<br/>
+
