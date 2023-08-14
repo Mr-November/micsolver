@@ -7,7 +7,9 @@ B = [d, a, b; -a, d, c; -b, -c, d];
 n0 = B.' * r;
 r0 = (L1 * d)/norm(n0)^2 .* n0;
 ne = B * r3;
-r1 = spp(n0, (1/2 + 1/pi) * L1 * d, ne);
+
+r1 = spp(n0, (1/2 + 1/pi) * L1 * d, ne, r3);
+
 if d ~= 0
     for cor_idx = 1: noc % One-step correction.
         tmp = r1 - [r0, ne] * (([n0.' + [0, 0, L1*d*(1/acos(r1(3)) - 1/sqrt(1-r1(3)^2))]; ne.'] * [r0, ne]) \ [n0.' * r1 - rho(r1(3), L1) * d; ne.' * r1]);
@@ -17,7 +19,7 @@ end
 end
 
 
-function soln = spp(n1, d, n2)
+function soln = spp(n1, d, n2, rn)
 % This function solves $r$ that satisfies
 % n_1 \cdot r - d = 0,
 % n_2 \cdot r = 0,
@@ -38,9 +40,8 @@ det1 = n12 * n23 - n13 * n22;
 det2 = n11 * n23 - n13 * n21;
 
 a = det1^2 + det2^2 + det0^2;
-if abs(a) < 1e-10
-    r = [-n11*n13; -n12*n13; n11^2+n12^2];
-    soln = r / norm(r);
+if a < eps
+    soln = [-rn(1)*rn(3); -rn(2)*rn(3); rn(1)^2+rn(2)^2]/sqrt(rn(1)^2+rn(2)^2);
 else
     b = 2 * d * (n22 * det1 + n21 * det2);
     c = d^2 * (n22^2 + n21^2) - det0^2;
