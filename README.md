@@ -7,7 +7,7 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 ```
 @INPROCEEDINGS{Qiu-RSS-23, 
     AUTHOR    = {Ke Qiu AND Jingyu Zhang AND Danying Sun AND Rong Xiong AND Haojian LU AND Yue Wang}, 
-    TITLE     = {{An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots}}, 
+    TITLE     = {An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots}, 
     BOOKTITLE = {Proceedings of Robotics: Science and Systems}, 
     YEAR      = {2023}, 
     ADDRESS   = {Daegu, Republic of Korea}, 
