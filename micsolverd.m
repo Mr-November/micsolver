@@ -167,41 +167,97 @@ if isequal(type, 'plot')
     fprintf('Candidate $t$ includes: ');
     disp(ts(idx));
     traverse_plot(norm_r01, zeta, err_r, err_t, err, is);
+    traverse_plot2(r0, norm_r01, P, zeta, err_r, err_t, err, is)
 end
 
 end
 
-function traverse_plot(radius, zeta, err_r, err_t, err, is)
+function traverse_plot2(r0, norm_r01, P, zeta, err_r, err_t, err, is)
 lwb = 4; lwt = 2; % Line width for error curves.
 lwb2 = 3; lwt2 = 2; % Line width for legends.
 ms = 26; lwbox = 2; % Box of equilibria.
 new_red = [238, 0, 0]/255;
 new_blue = [0, 0, 238]/255;
 
-figure(220);
-err_scale = 1/max(max(err_r), max(err_t));
-plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), 0.*zeta, '-', 'LineWidth', 1.0, 'Color', [0.4,0.4,0.4,0.6]);
+figure(221);
+err_scale = -1/max(max(err_r), max(err_t));
+
+radius = 1;
+data = [radius.*sin(2*pi*zeta); radius.*cos(2*pi*zeta); 0.*zeta];
+data = r0 + norm_r01 .* (P * data);
+plot3(data(1, :), data(2, :), data(3, :), 'k-', 'LineWidth', lwt);
 hold on;
-plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err_r*err_scale, '--', 'LineWidth', lwt, 'Color', new_red);
-plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err_t*err_scale, '--', 'LineWidth', lwt, 'Color', new_blue);
-plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err*err_scale, 'k--', 'LineWidth', lwb);
+
+data = [radius.*sin(2*pi*zeta); radius.*cos(2*pi*zeta); err_r*err_scale];
+data = r0 + norm_r01 .* (P * data);
+plot3(data(1, :), data(2, :), data(3, :), '--', 'LineWidth', lwt, 'Color', new_red);
+
+data = [radius.*sin(2*pi*zeta); radius.*cos(2*pi*zeta); err_t*err_scale];
+data = r0 + norm_r01 .* (P * data);
+plot3(data(1, :), data(2, :), data(3, :), '--', 'LineWidth', lwt, 'Color', new_blue);
+
+data = [radius.*sin(2*pi*zeta); radius.*cos(2*pi*zeta); err*err_scale];
+data = r0 + norm_r01 .* (P * data);
+plot3(data(1, :), data(2, :), data(3, :), 'k--', 'LineWidth', lwb);
+
 for i = is
     t = zeta(i);
-    plot3(radius.*sin(2*pi*(t)), radius.*cos(2*pi*(t)), err(i)*err_scale, ...
+    data = [radius.*sin(2*pi*(t)); radius.*cos(2*pi*(t)); err(i)*err_scale];
+    data = r0 + norm_r01 .* (P * data);
+    plot3(data(1, :), data(2, :), data(3, :), ...
         'ks', 'MarkerSize', 12, 'LineWidth', 2);
 end
-zoff = sqrt(1-radius^2);
-[X,Y,Z] = sphere(256); surf(X, Y, Z-zoff, (Z+1)/2, 'LineStyle', 'none', 'FaceAlpha', 0.7);
+[X,Y,Z] = sphere(256); surf(X, Y, Z, (Z+1)/2, 'LineStyle', 'none', 'FaceAlpha', 0.7);
 colormap(linspace(0.4, 1, 256).'.*ones(256, 3));
+xlabel('$c_3$', 'Interpreter', 'latex');
+ylabel('$-b_3$', 'Interpreter', 'latex');
+zlabel('$a_3$~~~~~~~~', 'Rotation', 0, 'Interpreter', 'latex');
+pbaspect([1, 1, 1]);
+daspect([1, 1, 1]);
+xlim([-1.5, 1.5]);
+ylim([-1.5, 1.5]);
+zlim([-1.5, 1.5]);
+xticks([-1, 0, 1]);
+yticks([-1, 0, 1]);
+zticks([-1, 0, 1]);
+view(-60, 20);
+set(gcf, 'Position', [50, 50, 680, 600]);
+set(gca, 'XColor', 'k', 'YColor', 'k', 'ZColor', 'k', ...
+    'LineWidth', 0.7, 'FontName', 'Times New Roman', 'FontSize', 24);
+end
+
+function traverse_plot(radius, zeta, err_r, err_t, err, is)
+lwb = 4; lwt = 2.5; % Line width for error curves.
+lwb2 = 3; lwt2 = 2.5; % Line width for legends.
+ms = 26; lwbox = 2.5; % Box of equilibria.
+new_red = [238, 0, 0]/255;
+new_blue = [0, 0, 238]/255;
+% new_blue = [14,65,156]/255;
+% new_red = [204,26,26]/255;
+
+figure(220);
+err_scale = 1/max(max(err_r), max(err_t));
+zoff = sqrt(1-radius^2);
+plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), 0.*zeta+zoff, 'k-', 'LineWidth', lwt);
+hold on;
+plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err_r*err_scale+zoff, '--', 'LineWidth', lwt, 'Color', new_red);
+plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err_t*err_scale+zoff, '--', 'LineWidth', lwt, 'Color', new_blue);
+plot3(radius.*sin(2*pi*zeta), radius.*cos(2*pi*zeta), err*err_scale+zoff, 'k--', 'LineWidth', lwb);
+for i = is
+    t = zeta(i);
+    plot3(radius.*sin(2*pi*(t)), radius.*cos(2*pi*(t)), err(i)*err_scale+zoff, ...
+        'ks', 'MarkerSize', 12, 'LineWidth', 2);
+end
+% [X,Y,Z] = sphere(256); surf(X, Y, Z, (Z+1)/2, 'LineStyle', 'none', 'FaceAlpha', 0.7);
+% colormap(linspace(0.4, 1, 256).'.*ones(256, 3));
 pbaspect([1, 1, 1]);
 daspect([1, 1, 1]);
 xlim([-1.2, 1.2]);
 ylim([-1.2, 1.2]);
-zlim([-3/4, -3/4+2.4]);
+zlim([-0.4, 2]);
 xticks([]);
 yticks([]);
 zticks([]);
-view(-60, 20);
 set(gcf, 'Position', [50, 50, 680, 600]);
 set(gca, 'XColor', 'k', 'YColor', 'k', 'ZColor', 'k', ...
     'LineWidth', 0.7, 'FontName', 'Times New Roman', 'FontSize', 24);
@@ -217,22 +273,20 @@ for i = is
     t = zeta(i);
     plot(t, err(i), 'ks', 'MarkerSize', ms, 'LineWidth', lwbox);
 end
-xlabel('$t$', 'Interpreter', 'latex', 'Position', [0.5,-0.45,-1]);
-ylabel('Error', 'Position', [-0.049, 0.9, 0]);
+xlabel('$s$', 'Interpreter', 'latex', 'Position', [0.5,-0.2,-1]);
+ylabel('Error');
 xlim([0, 1]);
 xticks(0: 0.2: 1);
-set(gcf, 'Position', [20, 100, 1300, 300]);
-set(gca, 'OuterPosition', [0, 0, 1, 1] ,'InnerPosition', [0.065, 0.26, 0.78, 0.62]);
 rc = plot([2,3], [2,2], '--', 'LineWidth', lwt2, 'Color', new_red);
 bc = plot([2,3], [1,1], '--', 'LineWidth', lwt2, 'Color', new_blue);
 kc = plot([2,3], [0,0], 'k--', 'LineWidth', lwb2);
 legend([rc, bc, kc], ...
-    '$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime})$', '$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime\prime})$', '$~e$', ...
-    'Interpreter', 'latex','NumColumns', 1, 'Position', [0.87,0.37,0.11,0.5], 'EdgeColor', 'none', ...
-    'FontName', 'Times New Roman', 'FontSize', 24);
-set(gca, 'XColor', 'k', 'YColor', 'k', ...
-    'XMinorGrid', 'on', 'XMinorTick', 'on', 'TickDir', 'out', 'TickLength', [0.005, 0.01], ...
-    'Box', 'on', 'LineWidth', 0.7, ...
-    'FontName', 'Times New Roman', 'FontSize', 24);
+    "$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime})~~~$", "$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime\prime})~~~$", "$~e$", ...
+    'Interpreter', 'latex', 'Box', 'off', 'Position', [0.58,0.8,0.4,0.16], 'NumColumns', 3, 'EdgeColor', 'none', ...
+    'FontName', 'Times New Roman', 'FontSize', 42);
+set(gcf, 'Position', [2250,-200,1900,600]);
+set(gca, 'Position', [0.07,0.155,0.88,0.635], 'XColor', 'k', 'YColor', 'k', 'TickLength', [0.003, 0.01], ...
+    'Box', 'on', 'LineWidth', 1.2, ...
+    'FontName', 'Times New Roman', 'FontSize', 36);
 
 end

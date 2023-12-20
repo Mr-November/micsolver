@@ -1,10 +1,27 @@
-# An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots
+# An Actuator Space Optimal Path Tracking Framework for Continuum Robots: Theory, Algorithm and Validation
+
+This repository implements the algorithms presented in our article.
+
+Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots) appeared in proceedings of Robotics: Science and Systems 2023. If you enjoy this repository and use it, please cite our paper
+
+```
+@INPROCEEDINGS{Qiu-RSS-23, 
+    AUTHOR    = {Ke Qiu AND Jingyu Zhang AND Danying Sun AND Rong Xiong AND Haojian LU AND Yue Wang}, 
+    TITLE     = {{An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots}}, 
+    BOOKTITLE = {Proceedings of Robotics: Science and Systems}, 
+    YEAR      = {2023}, 
+    ADDRESS   = {Daegu, Republic of Korea}, 
+    MONTH     = {July}, 
+    DOI       = {10.15607/RSS.2023.XIX.091} 
+} 
+```
 
 ### Package Overview
 
-**Demo (1 file)**
+**Demo (2 file)**
 
 - main_demo.m  
+- main_demo2.m  
 <br/>
 
 **Solver (7 files)**  
@@ -18,6 +35,15 @@ private:
 - get_err.m  
 - solve_r1.m  
 - solve_r2.m  
+<br/>
+
+**Planner (3 files)**  
+public:  
+- dp.m  
+- allocate_time.m
+
+private:  
+- PUTC.mat  
 <br/>
 
 **Numerical Methods (5 files)**  
@@ -49,12 +75,15 @@ private:
 - q2arc.m  
 - arc2xi.m  
 - xi2arc.m  
+- xi2len.m  
 - q2rot.m  
 - rot2q.m  
 <br/>
 
-**Other Tools (4 files)**  
+**Other Tools (6 files)**  
 - circles3.m  
+- circles3c.m  
+- frame.m  
 - get_end.m  
 - collision_indicator.m  
 - collision_marker.m  
@@ -184,6 +213,30 @@ This is a private function of our solver.
 
 <br/>
 
+#### Planner
+
+**dp.m**
+
+`DP` Finds the shortest path in a graph.
+
+`[PATH, COST] = DP(XISC, LOSSFUN)` returns the paths and corresponding costs using the Dijkstra’s algorithm. The cell array `XISC` defines the vertices. The function handle `LOSSFUN` defines the weight of two adjacent edges. The output `PATH` and `COST` are cell arrays.
+
+<br/>
+
+**allocate_time.m**
+
+`ALLOCATE_TIME` allocates optimal time to a given sequence of concatenated parameters, considering the actuator velocity constraints.
+
+`TS = ALLOCATE_TIME(XIS)` returns the time array `TS`.
+
+<br/>
+
+**PUTC.mat**
+
+This file stores the mechanism constants of our continuum robot prototype, like the radius of pullies, positions of channels. These data would be used when allocating time in the actuator space.
+
+<br/>
+
 #### Numerical Methods
 
 **revise_*.m**
@@ -278,7 +331,7 @@ This is a private function of numerical methods.
 
 **up_vee.m**
 
-`UP_VEE` Computes the Lie algebra of a vector.
+`UP_VEE` Computes the vector of a Lie algebra.
 
 `V = UP_VEE(M)` is an element of $\mathbb{R}^3$ or $\mathbb{R}^6$, where `M` is an element of $\mathsf{so}_3$ or $\mathsf{se}_3$, respectively.
 
@@ -361,6 +414,20 @@ arc = xi2arc(1, 1, 1, xi);
 
 <br/>
 
+**xi2len.m**
+
+`XI2LEN` Converts the concatenated parameter to the actuator lengths.
+
+`LEN = XI2LEN(XI)` computes the actuator lengths `LEN` of a 3-section constant-curvature robot. The concatenated parameter `XI` is defined in our article.
+
+*Example*
+```matlab
+xi = [-1.6; 0.8; 1.2; -0.2; 0.6; 0.2];
+len = xi2len(xi);
+```
+
+<br/>
+
 **q2rot.m**
 
 `Q2ROT` Converts a quaternion to a rotation matrix.
@@ -393,6 +460,37 @@ circles3(1, L1, L2, L3, xi_1, 'k--');
 xi_2 = [-0.39; 0.48; -1.13; 0.47; 1.79; -0.17];
 circles3(1, L1, L2, L3, xi_2, 'k-');
 view(75, 9);
+```
+
+<br/>
+
+**circles3c.m**
+
+`CIRCLES3` Visualises the 3-section constant-curvature robot with given model parameters and a specified colour.
+
+`CIRCLES3C(FH, L1, L2, L3, XI, TYPE, COLOUR)` displays the plot in target figure `FH`. The robot is described by the section lengths `L1, L2, L3` and the overall exponential coordinate `XI`. Line styles are specified in the character string `TYPE`, line colours are specified in the triple `COLOUR`.
+
+*Example*
+```matlab
+L1 = 1; L2 = 1; L3 = 1;
+xi_1 = [-1.60; 0.08; 1.20; -0.20; 0.60; 0.20];
+circles3c(1, L1, L2, L3, xi_1, '--', [0.1, 0.1, 0.1]);
+xi_2 = [-0.39; 0.48; -1.13; 0.47; 1.79; -0.17];
+circles3c(1, L1, L2, L3, xi_2, '-', [0.2, 0.2, 0.2]);
+view(75, 9);
+```
+
+<br/>
+
+**frame.m**
+
+`FRAME` draws a coordinate frame with specified position (and orientation) and transparency.
+
+`FRAME(FH, A, ALPHA)` displays the plot in target figure `FH`. The position (and orientation) is specified by `A` and the transparency is specified by `ALPHA`.
+
+*Example*
+```matlab
+frame(1, [eye(3), zeros(3, 1); 0, 0, 0, 1], 0.3);
 ```
 
 <br/>

@@ -29,8 +29,8 @@ function Jc = jaco_c12(w1, w2, L)
 w = [w1, w2, 0];
 n = norm(w);
 if n == 0
-    M = 1/2;
-    Jc = [eye(3); [0, M, 0; -M, 0, 0; 0, 0, 0]];
+    ML = L/2;
+    Jc = [eye(3); [0, ML, 0; -ML, 0, 0; 0, 0, 0]];
 else
     M = (1 - cos(n)) / n^2;
     N = (n - sin(n)) / n^3;
