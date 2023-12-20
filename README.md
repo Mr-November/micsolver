@@ -20,11 +20,14 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 
 **(main_demo.m)** Results of multiple solutions obtained by our algorithm.
 
-<img src="./fig/eg30105.svg" width="27%"><img src="./fig/eg30266.svg" width="27%"><img src="./fig/eg30683.svg" width="27%"><img src="./fig/eg30850.svg" width="27%">
+<img src="./fig/eg30105.svg" width="30%"><img src="./fig/eg30266.svg" width="30%">
+
+<img src="./fig/eg30683.svg" width="30%"><img src="./fig/eg30850.svg" width="30%">
 
 **(main_demo2.m)** Results of tracking a straight line path in two different configurations obtained by our algorithm.
 
 <img src="./fig/fig1.png" width="66%">
+
 <img src="./fig/fig2.png" width="66%">
 
 ### Package Overview
