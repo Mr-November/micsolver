@@ -6,20 +6,30 @@ close all;
 L1 = 1; L2 = 1; L3 = 1;
 
 % Self-defined end pose.
-% This example provides a heart-shaped multiple solutions.
-alpha = 4*pi/5; omega = [-0.8; 0.24; -0.5];
-q = [cos(alpha/2); sin(alpha/2)*omega/norm(omega)];
-r = [1.12; -0.03; -1.13];
+% This example provides an example with four multiple solutions.
+alpha = 15*pi/16; omega = [0.48; sqrt(3)/10; -0.86];
+q = [cos(alpha/2); sin(alpha/2)*omega];
+r = [-0.4; 1.1; 0.8];
 
 % Solve the problem.
 tol = 1e-2; fun = @(e, x) e < tol;
 [sol, ~, ~] = micsolverd(L1, L2, L3, q, r, 0.01, [5, 5], tol, 4, fun, 'plot', 'plot');
 
 % Plot the results.
-fh = figure();
-circles3(fh, L1, L2, L3, sol(:, 1), 'k--');
-circles3(fh, L1, L2, L3, sol(:, 2), 'k-');
+for eta = 1: size(sol, 2)
+    fh = figure(10+eta);
+    circles3(fh, L1, L2, L3, sol(:, 2), 'k--');
+    circles3(fh, L1, L2, L3, sol(:, eta), 'k-');
 
-% Sets the azimuth and elevation angles of the sight.
-view(60, 15);
+    % Set the azimuth and elevation angles of the sight.
+    view(119, 20);
+
+    % Set axis limits.
+    xlim([-1.6, 0.8]);
+    xticks([-1, 0, 1]);
+    ylim([-0.8, 1.6]);
+    yticks([0, 1]);
+    zlim([-0.7, 1.7]);
+    zticks([0, 1]);
+end
 

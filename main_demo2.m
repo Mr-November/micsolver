@@ -75,6 +75,7 @@ calpha = linspace(1, 1, smp);
 
 % Case 1.
 fh = figure(1);
+subplot(1, 2, 1);
 chs = path{1};
 plot3([-1, 0.8, -1, 0.8], ones(1, 4)*yp, ones(1, 4)*h, '-', 'Color', [ones(1, 3)*0.5, 0.2], 'LineWidth', 10);
 hold on;
@@ -102,13 +103,30 @@ ylim([-1.5, 1.4]);
 yticks([-1, 0, 1]);
 zlim([-0.1, 3.1]);
 zticks([0, 1, 2, 3]);
-set(gcf, 'Position', [50, 50, 680, 600]);
 set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
     'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'ZColor', 'k', 'Color', 'w', ...
-    'FontName', 'Times New Roman', 'FontSize', 28);
+    'FontName', 'Times New Roman', 'FontSize', 16);
+
+subplot(1, 2, 2);
+act_len = xi2len(xis.');
+intv = ts(1): 0.01: ts(end);
+for i = 1: 9
+    plot(intv, spline(ts, act_len(i,:), intv), '-', 'LineWidth', 2);
+    hold on;
+end
+xlim([ts(1), ts(end)]);
+xlabel('Time (s)');
+ylim([-50, 50]);
+ylabel('Actuation (mm)');
+set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
+    'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'Color', 'w', ...
+    'FontName', 'Times New Roman', 'FontSize', 16);
+
+set(gcf, 'Position', [100, 100, 800, 300]);
 
 % Case 2.
 fh = figure(2);
+subplot(1, 2, 1);
 chs = path{2};
 plot3([-1, 0.8, -1, 0.8], ones(1, 4)*yp, ones(1, 4)*h, '-', 'Color', [ones(1, 3)*0.5, 0.2], 'LineWidth', 10);
 hold on;
@@ -136,11 +154,33 @@ ylim([-1.5, 1.4]);
 yticks([-1, 0, 1]);
 zlim([-0.1, 3.1]);
 zticks([0, 1, 2, 3]);
-set(gcf, 'Position', [550, 50, 680, 600]);
 set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
     'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'ZColor', 'k', 'Color', 'w', ...
-    'FontName', 'Times New Roman', 'FontSize', 28);
+    'FontName', 'Times New Roman', 'FontSize', 16);
 
+subplot(1, 2, 2);
+chs = path{2};
+xis = nan(smp, 6);
+for smp_idx = 1: smp
+    sol = rvsd_solns{smp_idx};
+    xis(smp_idx, :) = sol(:, chs(smp_idx)).';
+end
+ts = allocate_time(xis.');
+act_len = xi2len(xis.');
+intv = ts(1): 0.01: ts(end);
+for i = 1: 9
+    plot(intv, spline(ts, act_len(i,:), intv), '-', 'LineWidth', 2);
+    hold on;
+end
+xlim([ts(1), ts(end)]);
+xlabel('Time (s)');
+ylim([-50, 50]);
+ylabel('Actuation (mm)');
+set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
+    'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'Color', 'w', ...
+    'FontName', 'Times New Roman', 'FontSize', 16);
+
+set(gcf, 'Position', [200, 300, 800, 300]);
 
 % Loss function for planning.
 function loss = lossfun2(xi1, xi2)
