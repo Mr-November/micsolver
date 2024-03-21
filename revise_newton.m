@@ -5,7 +5,7 @@ function [xi_star, err, k] = revise_newton(L1, L2, L3, q, r, xi, mstep, tol, typ
 %   
 %   Methods
 %      grad            gradient method
-%      dls             damped least square method
+%      dls             damped least-squares method
 %      newton          Newton-Raphson method
 %   
 %   Input parameters

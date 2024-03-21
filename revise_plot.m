@@ -28,7 +28,7 @@ if method == 1
     legend([rs, bs, ks, tolax], ' Angular error', ' Linear error', ' Total error', ' Tolerance', ...
         'Location', 'northeast');
 elseif method == 2
-    title('Damped least square Method');
+    title('Damped least-squares Method');
     legend([rs, bs, ks, tolax], ' Angular error', ' Linear error', ' Total error', ' Tolerance', ...
         'Location', 'northeast');
 elseif method == 3
