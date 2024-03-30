@@ -1,5 +1,5 @@
 function [xi_star, err, k] = revise_dls(L1, L2, L3, q, r, xi, mstep, tol, type)
-%REVISE_DLS Correct the initial value with the damped least square method.
+%REVISE_DLS Correct the initial value with the damped least-squares method.
 %   [XI_STAR, ERR, K] = REVISE_*(L1, L2, L3, Q, R, XI, MSTEP, TOL, TYPE)
 %   returns the result of numerical correction.
 %   

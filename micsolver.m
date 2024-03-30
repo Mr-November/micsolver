@@ -67,7 +67,7 @@ if nos == 0 % Can't find solutions in coarser resolution, use finer resolution.
         end
     end
 end
-if nos == 0 % Use damped least square method.
+if nos == 0 % Use damped least-squares method.
     for soln = solns
         [xi, err, cnt] = revise_dls(L1, L2, L3, q, r, soln2xi(L1, L2, L3, soln), 200, tol, 'noplot');
         noi = noi + cnt;
