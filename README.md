@@ -2,8 +2,7 @@
 
 <div align="right">Ke Qiu, Hongye Zhang, Jingyu Zhang, Rong Xiong, Haojian Lu, Yue Wang<br>State Key Laboratory of Industrial Control and Technology, Zhejiang University</div>
 
-  
-<br/>  
+<br/>
 <br/>
 
 This repository implements the algorithms presented in our article. If you enjoy this repository and use it, please cite our paper.
@@ -22,7 +21,7 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 } 
 ```
 
-  
+
 <br/>
 
 ### Demo
@@ -34,10 +33,10 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 **(main_demo2.m)** Results of tracking a straight line path in two different configurations obtained by our algorithm.
 
 <img src="./fig/SM-Figure-5.jpeg" width="50%"><img src="./fig/SM-Figure-6.jpeg" width="50%">
-  
+
 <br/>
 
-### Package Overview
+### Package overview
 
 **Demo (2 file)**  
 - main_demo.m  
@@ -249,7 +248,7 @@ This is a private function of our solver.
 
 <br/>
 
-#### Numerical Methods
+#### Numerical methods
 
 **revise_*.m**
 
@@ -305,7 +304,7 @@ This is a private function of numerical methods.
 
 <br/>
 
-#### Quaternion Operations
+#### Quaternion operations
 
 **up_plus.m**
 
@@ -331,7 +330,7 @@ This is a private function of numerical methods.
 
 <br/>
 
-#### Lie Algebra Operations
+#### Lie algebra operations
 
 **up_hat.m**
 
@@ -456,7 +455,7 @@ len = xi2len(xi);
 
 <br/>
 
-#### Other Tools
+#### Other tools
 
 **circles3.m**
 
