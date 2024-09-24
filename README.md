@@ -1,8 +1,10 @@
 ## An actuator space optimal kinematic path tracking framework for tendon-driven continuum robots: Theory, algorithm and validation
 
-<div style="text-align: right">Ke Qiu, Hongye Zhang, Jingyu Zhang, Rong Xiong, Haojian Lu, Yue Wang<br>State Key Laboratory of Industrial Control and Technology, Zhejiang University</div>
+<div align="right">Ke Qiu, Hongye Zhang, Jingyu Zhang, Rong Xiong, Haojian Lu, Yue Wang<br>State Key Laboratory of Industrial Control and Technology, Zhejiang University</div>
 
-
+  
+<br/>  
+<br/>
 
 This repository implements the algorithms presented in our article. If you enjoy this repository and use it, please cite our paper.
 
@@ -20,7 +22,8 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 } 
 ```
 
-
+  
+<br/>
 
 ### Demo
 
@@ -31,37 +34,34 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 **(main_demo2.m)** Results of tracking a straight line path in two different configurations obtained by our algorithm.
 
 <img src="./fig/SM-Figure-5.jpeg" width="50%"><img src="./fig/SM-Figure-6.jpeg" width="50%">
-
-
+  
+<br/>
 
 ### Package Overview
 
-**Demo (2 file)**
-
+**Demo (2 file)**  
 - main_demo.m  
-- main_demo2.m 
+- main_demo2.m  
+<br/>
 
-
-
-**Solver (7 files)** 
+**Solver (7 files)**  
 public:  
 
 - micsolver.m  
-- micsolverd.m
+- micsolverd.m  
 
 private:  
 - rho.m  
 - soln2xi.m  
 - get_err.m  
 - solve_r1.m  
-- solve_r2.m 
-
-
+- solve_r2.m  
+<br/>
 
 **Planner (2 files)**  
 public:  
 - dp.m  
-- allocate_time.m
+- allocate_time.m  
 <br/>
 
 **Numerical Methods (5 files)**  
