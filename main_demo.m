@@ -12,8 +12,8 @@ q = [cos(alpha/2); sin(alpha/2)*omega];
 r = [-0.4; 1.1; 0.8];
 
 % Solve the problem.
-tol = 1e-2; fun = @(e, x) e < tol;
-[sol, ~, ~] = micsolverd(L1, L2, L3, q, r, 0.01, [5, 5], tol, 4, fun, 'plot', 'plot');
+tol = 1e-2; exitfcn = @(e, x) e < tol;
+[sol, ~, ~] = micsolverd(L1, L2, L3, q, r, 0.01, [5, 5], tol, 4, exitfcn, 'plot', 'plot');
 
 % Plot the results.
 for eta = 1: size(sol, 2)

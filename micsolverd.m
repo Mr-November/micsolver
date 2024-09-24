@@ -273,8 +273,8 @@ for i = is
     t = zeta(i);
     plot(t, err(i), 'ks', 'MarkerSize', ms, 'LineWidth', lwbox);
 end
-xlabel('$s$', 'Interpreter', 'latex', 'Position', [0.5,-0.2,-1]);
-ylabel('Error');
+xlabel('$s$', 'Interpreter', 'latex', 'Position', [0.5,-0.3,-1]);
+ylabel('Error', 'Units', 'normalized', 'Position', [-0.042,0.5,0]);
 xlim([0, 1]);
 xticks(0: 0.2: 1);
 rc = plot([2,3], [2,2], '--', 'LineWidth', lwt2, 'Color', new_red);
@@ -282,11 +282,11 @@ bc = plot([2,3], [1,1], '--', 'LineWidth', lwt2, 'Color', new_blue);
 kc = plot([2,3], [0,0], 'k--', 'LineWidth', lwb2);
 legend([rc, bc, kc], ...
     "$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime})~~~$", "$~e(\hat{\mbox{\boldmath$r$}}_2^{\prime\prime})~~~$", "$~e$", ...
-    'Interpreter', 'latex', 'Box', 'off', 'Position', [0.58,0.8,0.4,0.16], 'NumColumns', 3, 'EdgeColor', 'none', ...
-    'FontName', 'Times New Roman', 'FontSize', 24);
-set(gcf, 'Position', [50,50,1000,400]);
-set(gca, 'Position', [0.07,0.155,0.88,0.635], 'XColor', 'k', 'YColor', 'k', 'TickLength', [0.003, 0.01], ...
-    'Box', 'on', 'LineWidth', 1.2, ...
-    'FontName', 'Times New Roman', 'FontSize', 24);
+    'Interpreter', 'latex', 'Box', 'off', 'Position', [0.6,0.87,0.36,0.1], 'NumColumns', 3, 'EdgeColor', 'none', ...
+    'FontName', 'Times New Roman', 'FontSize', 26);
+set(gcf, 'Position', [10, 50, 1250, 400]);
+set(gca, 'Position', [0.07,0.22,0.885,0.625], 'XColor', 'k', 'YColor', 'k', ...
+    'TickLength', [0.005, 0], 'Box', 'on', 'LineWidth', 1.2, ...
+    'FontName', 'Times New Roman', 'FontSize', 28, 'LabelFontSizeMultiplier', 1);
 
 end

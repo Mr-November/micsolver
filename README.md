@@ -1,8 +1,12 @@
-# An Actuator Space Optimal Path Tracking Framework for Continuum Robots: Theory, Algorithm and Validation
+## An actuator space optimal kinematic path tracking framework for tendon-driven continuum robots: Theory, algorithm and validation
 
-This repository implements the algorithms presented in our article.
+<div style="text-align: right">Ke Qiu, Hongye Zhang, Jingyu Zhang, Rong Xiong, Haojian Lu, Yue Wang<br>State Key Laboratory of Industrial Control and Technology, Zhejiang University</div>
 
-Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots) appeared in proceedings of Robotics: Science and Systems 2023. If you enjoy this repository and use it, please cite our paper
+
+
+This repository implements the algorithms presented in our article. If you enjoy this repository and use it, please cite our paper.
+
+Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots) appears in proceedings of Robotics: Science and Systems 2023.
 
 ```
 @INPROCEEDINGS{Qiu-RSS-23, 
@@ -16,30 +20,32 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 } 
 ```
 
+
+
 ### Demo
 
 **(main_demo.m)** Results of multiple solutions obtained by our algorithm.
 
-<img src="./fig/eg30105.svg" width="30%"><img src="./fig/eg30266.svg" width="30%">
-
-<img src="./fig/eg30683.svg" width="30%"><img src="./fig/eg30850.svg" width="30%">
+<img src="./fig/SM-Figure-1.jpeg" width="25%"><img src="./fig/SM-Figure-2.jpeg" width="25%"><img src="./fig/SM-Figure-3.jpeg" width="25%"><img src="./fig/SM-Figure-4.jpeg" width="25%">
 
 **(main_demo2.m)** Results of tracking a straight line path in two different configurations obtained by our algorithm.
 
-<img src="./fig/fig1.png" width="66%">
+<img src="./fig/SM-Figure-5.jpeg" width="50%"><img src="./fig/SM-Figure-6.jpeg" width="50%">
 
-<img src="./fig/fig2.png" width="66%">
+
 
 ### Package Overview
 
 **Demo (2 file)**
 
 - main_demo.m  
-- main_demo2.m  
-<br/>
+- main_demo2.m 
 
-**Solver (7 files)**  
+
+
+**Solver (7 files)** 
 public:  
+
 - micsolver.m  
 - micsolverd.m
 
@@ -48,16 +54,14 @@ private:
 - soln2xi.m  
 - get_err.m  
 - solve_r1.m  
-- solve_r2.m  
-<br/>
+- solve_r2.m 
 
-**Planner (3 files)**  
+
+
+**Planner (2 files)**  
 public:  
 - dp.m  
 - allocate_time.m
-
-private:  
-- PUTC.mat  
 <br/>
 
 **Numerical Methods (5 files)**  
@@ -233,7 +237,7 @@ This is a private function of our solver.
 
 `DP` Finds the shortest path in a graph.
 
-`[PATH, COST] = DP(XISC, LOSSFUN)` returns the paths and corresponding costs using the Dijkstra’s algorithm. The cell array `XISC` defines the vertices. The function handle `LOSSFUN` defines the weight of two adjacent edges. The output `PATH` and `COST` are cell arrays.
+`[PATH, COST] = DP(XISC, LOSSFCN)` returns the paths and corresponding costs using the Dijkstra's algorithm. The cell array `XISC` defines the vertices. The function handle `LOSSFCN` defines the weight of two adjacent edges. The output `PATH` and `COST` are cell arrays.
 
 <br/>
 
@@ -245,12 +249,6 @@ This is a private function of our solver.
 
 <br/>
 
-**PUTC.mat**
-
-This file stores the mechanism constants of our continuum robot prototype, like the radius of pullies, positions of channels. These data would be used when allocating time in the actuator space.
-
-<br/>
-
 #### Numerical Methods
 
 **revise_*.m**
@@ -258,7 +256,7 @@ This file stores the mechanism constants of our continuum robot prototype, like 
 `REVISE_*` Correct the initial value with a numerical method.
 
 `[XI_STAR, ERR, K] = REVISE_*(L1, L2, L3, Q, R, XI, MSTEP, TOL, TYPE)` returns the result of numerical correction.
-   
+
 *Methods*  
 `grad` gradient method  
 `dls` damped least square method  

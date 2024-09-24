@@ -8,7 +8,7 @@ L2 = 1;
 L3 = 1;
 
 % Generate a path.
-smp = 30;
+smp = 30; % Number of sample points.
 tolerance = 6e-4;
 R0 = rot([1;0;0], pi/3);
 h = 2.7;
@@ -43,11 +43,11 @@ end
 fprintf('##### INVERSE KINEMATICS #####\n\n');
 fprintf('Runtime (ms): '); disp(1000*sum(t_runtime));
 
-% Energy planning.
+% Distance planning.
 tic;
-[path, cost] = dp(rvsd_solns, @lossfun2);
+[path, cost] = dp(rvsd_solns, @lossfcn);
 runtime_dp = toc;
-fprintf('##### ENERGY PLANNING #####\n\n');
+fprintf('##### DISTANCE PLANNING #####\n\n');
 fprintf('Number of Cases: '); disp(size(path, 1));
 fprintf('Cost: '); disp(cost.');
 fprintf('Runtime (ms): '); disp(1000 * runtime_dp);
@@ -95,7 +95,7 @@ pbaspect([1, 1, 1]);
 daspect([1, 1, 1]);
 xlabel('$x$', 'Interpreter', 'latex');
 ylabel('$y$', 'Interpreter', 'latex');
-zlabel('$z$~~~~~~~~', 'Rotation', 0, 'Interpreter', 'latex');
+zlabel('$z$~~~~~~~', 'Rotation', 0, 'Interpreter', 'latex');
 view(-52, 15);
 xlim([-1.55, 1.35]);
 xticks([-1, 0, 1]);
@@ -118,6 +118,7 @@ xlim([ts(1), ts(end)]);
 xlabel('Time (s)');
 ylim([-50, 50]);
 ylabel('Actuation (mm)');
+axis square;
 set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
     'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'Color', 'w', ...
     'FontName', 'Times New Roman', 'FontSize', 16);
@@ -146,7 +147,7 @@ pbaspect([1, 1, 1]);
 daspect([1, 1, 1]);
 xlabel('$x$', 'Interpreter', 'latex');
 ylabel('$y$', 'Interpreter', 'latex');
-zlabel('$z$~~~~~~~~', 'Rotation', 0, 'Interpreter', 'latex');
+zlabel('$z$~~~~~~~', 'Rotation', 0, 'Interpreter', 'latex');
 view(-52, 15);
 xlim([-1.55, 1.35]);
 xticks([-1, 0, 1]);
@@ -176,15 +177,16 @@ xlim([ts(1), ts(end)]);
 xlabel('Time (s)');
 ylim([-50, 50]);
 ylabel('Actuation (mm)');
+axis square;
 set(gca, 'LineWidth', 1.2, 'TickLength', [0.006, 0.01], ...
     'Box', 'off', 'XColor', 'k', 'YColor', 'k', 'Color', 'w', ...
     'FontName', 'Times New Roman', 'FontSize', 16);
 
-set(gcf, 'Position', [200, 300, 800, 300]);
+set(gcf, 'Position', [200, 200, 800, 300]);
 
 % Loss function for planning.
-function loss = lossfun2(xi1, xi2)
-loss = norm(xi2len(xi1) - xi2len(xi2))^2 / 2;
+function loss = lossfcn(xi1, xi2)
+loss = norm(xi2len(xi1) - xi2len(xi2));
 end
 
 % Generate a straight line path.

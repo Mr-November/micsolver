@@ -1,8 +1,8 @@
-function [optpath, totcost] = dp(xisc, lossfun)
+function [optpath, totcost] = dp(xisc, lossfcn)
 %DP Finds the shortest path in a graph.
-%   [PATH, COST] = DP(XISC, LOSSFUN) returns the paths and corresponding
-%   costs using the Dijkstra s algorithm. The cell array XISC defines the
-%   vertices. The function handle LOSSFUN defines the weight of two
+%   [PATH, COST] = DP(XISC, LOSSFCN) returns the paths and corresponding
+%   costs using the Dijkstra's algorithm. The cell array XISC defines the
+%   vertices. The function handle LOSSFCN defines the weight of two
 %   adjacent edges. The output PATH and COST are cell arrays.
 
 n1 = size(xisc{1}, 2);
@@ -16,7 +16,7 @@ for k = 1: size(xisc, 2)-1
     path = num2cell(NaN(m, 1));
     for j = 1: m
         for i = 1: size(xisc{k}, 2)
-            cur_cost(i) = pre_cost(i) + lossfun(xisc{k}(:, i), xisc{k+1}(:, j));
+            cur_cost(i) = pre_cost(i) + lossfcn(xisc{k}(:, i), xisc{k+1}(:, j));
         end
         cost(j) = min(cur_cost);
         idcs = find(cur_cost == cost(j));
