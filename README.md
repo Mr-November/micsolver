@@ -7,7 +7,7 @@
 
 This repository implements the algorithms presented in our article. If you enjoy this repository and use it, please cite our paper.
 
-Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots) appears in proceedings of Robotics: Science and Systems 2023.
+Our previous work (title: An Efficient Multi-solution Solver for the Inverse Kinematics of 3-Section Constant-Curvature Robots) appears in proceedings of Robotics: Science and Systems 2023.
 
 ```
 @INPROCEEDINGS{Qiu-RSS-23, 
