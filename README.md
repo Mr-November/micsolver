@@ -38,7 +38,8 @@ Our previous work (titled: An Efficient Multi-solution Solver for the Inverse Ki
 
 ### Package overview
 
-**Demo (2 file)**  
+**Demo (2 files)**  
+
 - main_demo.m  
 - main_demo2.m  
 <br/>
@@ -63,8 +64,9 @@ public:
 - allocate_time.m  
 <br/>
 
-**Numerical Methods (5 files)**  
+**Numerical methods (5 files)**  
 public:  
+
 - revise_grad.m  
 - revise_dls.m  
 - revise_newton.m
@@ -74,13 +76,15 @@ private:
 - jacobian3cc.m  
 <br/>
 
-**Quaternion Operations (3 files)**  
+**Quaternion operations (3 files)**  
+
 - up_plus.m  
 - up_oplus.m  
 - up_star.m  
 <br/>
 
-**Lie Algebra Operations (4 files)**  
+**Lie algebra operations (4 files)**  
+
 - up_hat.m  
 - up_vee.m  
 - exphat.m  
@@ -97,7 +101,8 @@ private:
 - rot2q.m  
 <br/>
 
-**Other Tools (6 files)**  
+**Other tools (6 files)**  
+
 - circles3.m  
 - circles3c.m  
 - frame.m  
